@@ -1,0 +1,33 @@
+{% for friend_request in all_friend_requests %}
+<h1>{{friend_request.from_user}}
+	
+	<a class="accept-button" id="accept{{friend_request.id}}" data-catid="{{ friend_request.id }}"
+	href={% url 'Friend:accept friend request' requestID=friend_request.id %}>accept friend request</a>
+</h1>
+<h1>Done</h1>
+{% endfor %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $('.acceptbutton').click(function(){
+    var catid;
+    catid = $(this).attr("data-catid");
+
+    $.ajax(
+    {
+        type:"GET",
+        url: "/to_accept_friend_request",
+        data:{
+                 friend_request_id: catid
+        },
+        success: function( data ) 
+
+        {	
+        	
+            $( '#accept'+ catid ).remove();
+            
+        }
+        })
+});
+</script>
+

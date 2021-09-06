@@ -1,0 +1,95 @@
+<!-- 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    {% for message in messages %}
+    {% if message.sender == request.user %}
+<div class="card-panel right" style="width: 75%; position: relative">
+    <div style="position: absolute; top: 0; left:3px; font-weight: bolder" class="title">You</div>
+    {{ message }}
+</div>
+    {% else %}
+<div class="card-panel left blue lighten-5" style="width: 75%; position: relative">
+    <div style="position: absolute; top: 0; left:3px; font-weight: bolder" class="title">{{ message.sender }}</div>
+    {{ message }}
+</div>
+    {% endif %}
+    {% endfor %}
+<script>
+$(function () {
+    $('#user{{ receiver.id }}').addClass('active');
+    //Call receive function each 1 seconds to check for new messages in the database
+    setInterval(receive,1000)
+})
+</script> -->
+
+
+<!-- {% for friend_request in all_friend_requests %}
+<h2>{{friend_request.from_user}}
+    
+    <a class="accept-button" id="accept{{friend_request.id}}" data-catid="{{ friend_request.id }}"
+    href={% url 'Friend:accept friend request' requestID=friend_request.id %}>accept friend request</a>
+</h2>
+<h1>Done</h1>
+{% endfor %}
+ -->
+ {% if msg %}
+    {{ msg }}
+{% endif %}
+ <div id="new">
+        No new friends request 
+
+ </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+   
+   $(function () {
+   
+    console.log('HERE1')
+    setInterval(function receive() {
+        console.log('HERE2')
+    var url = '/friend/api/friend_requests/'
+    $.get(url, function (data) {
+        console.log(data);
+        if (data.length !== 0)
+        {
+            document.getElementById('new').innerHTML = "";
+            for(var i=0;i<data.length;i++) {
+                // console.log(data[i].from_user);
+                // console.log(data[i].ids[i])
+                var element = document.getElementById('new')
+                var header = document.createElement("h2")
+                var text = document.createTextNode(data[i].from_user)
+                header.appendChild(text)
+                element.appendChild(header)
+
+                var acceptlink = document.createElement("a")
+                var accepttext = document.createTextNode("Accept")
+                acceptlink.appendChild(accepttext)
+                acceptlink.href = '/friend/accepted_friend_request/' + data[i].from_user_id + '/'
+                // acceptlink.href = '/friend/accepted_friend_request/'
+                
+
+                var deletelink = document.createElement("a")
+                var deletetext = document.createTextNode("Delete")
+                deletelink.appendChild(deletetext)
+                deletelink.href = '/friend/deleted_friend_request/' + data[i].from_user_id + '/'
+
+                header.appendChild(acceptlink)
+                header.appendChild(deletelink)
+
+                // if element == null{
+                //     element.innerHTML = "No friend requests"
+                // }
+
+
+                
+            }            
+        }
+    })
+},1000)
+})
+</script>
+
+
+
